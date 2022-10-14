@@ -1,6 +1,9 @@
+// Importation du model Sauce et File Systeme pour Multer
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
+
+// Création de la sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
@@ -13,6 +16,7 @@ exports.createSauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
+// Modification d'une sauce existante que seul l'utilisateur à ajouté
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -24,6 +28,7 @@ exports.modifySauce = (req, res, next) => {
         .catch(error => res.status(401).json({ error }));
 };
 
+// Suppression de la sauce que seul l'utilisateur à ajouté
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
@@ -37,18 +42,21 @@ exports.deleteSauce = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// Obtention d'une sauce via son id
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
+// Obtention de toutes les sauces ajoutés
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 };
 
+// Permet de like les sauces, les dislikes ou ne rien faire
 exports.likedSauces = (req, res, next) => {
     if (req.body.like === 1) {
         Sauce.findOneAndUpdate({ _id: req.params.id }, { $inc: { likes: +1 }, $push: { usersLiked: req.body.userId } })

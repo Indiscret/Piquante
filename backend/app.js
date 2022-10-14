@@ -1,11 +1,15 @@
+// Importation d'express, mongoose et body-parser
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+// Importation des routes
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+
 const path = require('path');
 
+// Connexion à la BDD MongoDB
 mongoose.connect('mongodb+srv://Saian:1234@hottakes.lbwvgpp.mongodb.net/?retryWrites=true&w=majority',
 { useNewUrlParser: true,
   useUnifiedTopology: true })
