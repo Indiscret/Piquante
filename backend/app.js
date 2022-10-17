@@ -9,8 +9,10 @@ const userRoutes = require('./routes/user');
 
 const path = require('path');
 
+require('dotenv').config();
+
 // Connexion à la BDD MongoDB
-mongoose.connect('mongodb+srv://Saian:1234@hottakes.lbwvgpp.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.USER_MONGODB}:${process.env.PASSWORD_MONGODB}@hottakes.lbwvgpp.mongodb.net/?retryWrites=true&w=majority`,
 { useNewUrlParser: true,
   useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
