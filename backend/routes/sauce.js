@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 // Importation des modules utilisés par les routes
-const sauceCtrl = require('../controllers/sauce');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
+const sauceCtrl = require('../controllers/sauce');
 
 router.get('/', auth, sauceCtrl.getAllSauces);// Récupération de toutes les sauces
 router.post('/', auth, multer, sauceCtrl.createSauce);// Création d'une sauce

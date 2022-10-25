@@ -6,18 +6,24 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 // Inscription de l'utilisateur avec hashage du mot de passe et salage
+
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-        .then(hash => {
-            const user = new User({
-                email: req.body.email,
-                password: hash
-            });
-            user.save()
-                .then(() => res.status(201).json({message: 'Utilisateur crée'}))
-                .catch(error => res.status(400).json({error}));
-        })
-        .catch(error => res.status(500).json({error}));
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+    if (passwordRegex.test(req.body.password)) {
+        bcrypt.hash(req.body.password, 10)
+            .then(hash => {
+                const user = new User({
+                    email: req.body.email,
+                    password: hash
+                });
+                user.save()
+                    .then(() => res.status(201).json({ message: 'Utilisateur crée' }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
+    } else {
+        res.status(400).json({ message: "Le mot de passe doit faire une taille de 8 caractères minimum et contenir 1 majuscule, 1 minuscule, 1 chiffre et 1 symbole" });
+    }
 };
 
 // Connexion de l'utilisateur avec un token 
